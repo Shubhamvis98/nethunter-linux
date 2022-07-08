@@ -1,0 +1,48 @@
+#!/bin/bash
+
+cat << 'eof' 
+  ____             _          ____       _       _   
+ |  _ \ _   _  ___| | ___   _|  _ \ _ __(_)_ __ | |_ 
+ | | | | | | |/ __| |/ / | | | |_) | '__| | '_ \| __|
+ | |_| | |_| | (__|   <| |_| |  __/| |  | | | | | |_ 
+ |____/ \__,_|\___|_|\_\\__, |_|   |_|  |_|_| |_|\__|
+                        |___/         by ShubhamVis98
+
+eof
+
+RUCKY=${PWD}
+
+ducky()
+{
+	sleep 0.5
+	sed 's/^/STRING /;s/$/\nENTER/' $1 > ${1}.duck && \
+		echo "[+]Ducky Created..."
+	sudo mv ${1}.duck $RUCKY/$(basename ${1}).txt && \
+		echo "[*]Ducky Placed..."
+	sleep 1; echo
+}
+
+duckycl()
+{
+	sleep 0.5
+	sed 's/^/STRING /;s/$/\nENTER\nSHIFT HOME/' $1 > ${1}.duck && \
+		echo "[+]Ducky Created..."
+	sudo mv ${1}.duck $RUCKY/$(basename ${1}).txt && \
+		echo "[*]Ducky Placed..."
+	sleep 1; echo
+}
+
+if [ -z "$1" ]
+then
+	echo -e "[!]File Path Missing...\n"
+elif [ ! -f "$1" ]
+then
+	echo -e "[!]Invalid Path...\n"
+else
+	if [ "$2" == "cl" ]
+	then
+		duckycl $1
+	else
+		ducky $1
+	fi
+fi
