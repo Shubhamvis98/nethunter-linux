@@ -6,7 +6,8 @@
     <ul>
         <li>Execute: <code>make && make install</code></li>
     </ul>
-
+</ul>
+<ul>
     <h3>Manual Installation</h3>
     <ol>
         <li>Compile hid-gadget-test, rename the executable as "hidg" and put in "/usr/local/bin"</li>
