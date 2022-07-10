@@ -91,7 +91,9 @@ mount_mass_storage()
 	read IMG
 	if [[ -f $IMG || -b $IMG ]]
 	then
+		udc d
 		echo "$IMG" > functions/mass_storage.0/lun.0/file
+		udc e
 		echo2 'Done\n\n'
 	else
 		echo3 'Incorrect Path'
@@ -106,12 +108,12 @@ enable()
 	if [ $1 == 'hid' ]
 	then
 		echo2 'Enabling Keyboard and Mouse Interface'
-		ln -s functions/hid.0 configs/s.1
-		ln -s functions/hid.1 configs/s.1
+		ln -s functions/hid.0 configs/s.1 2>/dev/null
+		ln -s functions/hid.1 configs/s.1 2>/dev/null
 	elif [ $1 == 'storage' ]
 	then
 		echo2 'Enabling Mass Storage'
-		ln -s functions/mass_storage.0 configs/s.1
+		ln -s functions/mass_storage.0 configs/s.1 2>/dev/null
 	fi
 	udc e
 }
