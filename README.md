@@ -1,5 +1,8 @@
 <h1>USB Arsenal for PinePhone</h1>
 
+<img src="https://user-images.githubusercontent.com/43336210/178138927-de64a753-8b17-4345-b909-ae36412432a7.jpg" width="300px">
+
+
 <h2>Installation:</h2>
 <ul>
     <h3>Using Makefile</h3>
