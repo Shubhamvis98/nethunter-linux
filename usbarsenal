@@ -44,9 +44,9 @@ echo3()
 
 setup_core()
 {
-	VID="0x046d"
-	PID="0xc317"
-	SERIAL='1234567890'
+	VID="0x1D6B"
+	PID="0x0104"
+	SERIAL=`cat /etc/machine-id`
 	MANUFACTURER='fossfrog'
 	PRODUCT='HID Gadget'
 
@@ -80,8 +80,11 @@ setup_core()
 	echo 4 > functions/hid.1/report_length
 	echo $DESC_M | base64 -d > functions/hid.1/report_desc
 	
-	echo2 'Configuring Mass Storage...\n'
+	echo2 'Configuring Mass Storage...'
 	mkdir functions/mass_storage.0
+
+	echo2 "Configuring USB Tethering...\n"
+    mkdir functions/ecm.0
 }
 
 mount_mass_storage()
@@ -105,16 +108,28 @@ enable()
 {
 	udc d
 	cd $CONFIG_PATH
-	if [ $1 == 'hid' ]
-	then
-		echo2 'Enabling Keyboard and Mouse Interface'
-		ln -s functions/hid.0 configs/s.1 2>/dev/null
-		ln -s functions/hid.1 configs/s.1 2>/dev/null
-	elif [ $1 == 'storage' ]
-	then
-		echo2 'Enabling Mass Storage'
-		ln -s functions/mass_storage.0 configs/s.1 2>/dev/null
-	fi
+	case $1 in
+		hid)
+			echo2 'Enabling Keyboard and Mouse Interface'
+			ln -s functions/hid.0 configs/s.1 2>/dev/null
+			ln -s functions/hid.1 configs/s.1 2>/dev/null
+			;;
+		storage)
+			echo2 'Enabling Mass Storage'
+			ln -s functions/mass_storage.0 configs/s.1 2>/dev/null
+			;;
+		teth)
+			echo2 'Enabling Tethering'
+			ln -s functions/ecm.0 configs/s.1 2>/dev/null
+			if [ ! -e /etc/NetworkManager/system-connections/USB.nmconnection ]
+			then
+				nmcli connection add con-name USB ifname usb0 type ethernet ip4 10.66.0.1/24 > /dev/null
+				nmcli connection modify USB ipv4.route-metric 1500
+				nmcli connection modify USB ipv4.dns-priority 150
+				nmcli connection modify USB ipv4.method shared
+			fi
+			;;
+	esac
 	udc e
 }
 
@@ -148,6 +163,7 @@ disable_all()
 	rmdir */configs/s.1
 	rmdir */functions/*
 	rmdir *
+	nmcli connection | grep USB > /dev/null && nmcli connection delete USB > /dev/null
 	for mod in $(rmmod libcomposite 2>&1 | cut -d ':' -f4); do rmmod $mod; done
 	rmmod libcomposite
 	echo1 'Done'
@@ -169,7 +185,7 @@ fi
 PS3='Select Option: '
 COLUMNS=1
 
-select opt in 'Enable Keyboard/Mouse' 'Enable and Set Mass Storage Image' 'Disable All with Core' 'Exit'
+select opt in 'Enable Keyboard/Mouse' 'Enable and Set Mass Storage Image' 'Enable Tethering' 'Disable All with Core' 'Exit'
 do
 	case $opt in
 		'Enable Keyboard/Mouse')
@@ -179,8 +195,12 @@ do
 			mount_mass_storage
 			enable storage
 			;;
+		'Enable Tethering')
+			enable teth
+			;;
 		'Disable All with Core')
 			disable_all
+			echo -e '\n!!!Bye World!!!'
 			exit
 			;;
 		'Exit')
@@ -189,3 +209,4 @@ do
 			;;
 	esac
 done
+
