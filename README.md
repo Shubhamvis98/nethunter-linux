@@ -22,6 +22,7 @@
 <ul>
     <li>Keyboard and Mouse Input Working</li>
     <li>USB Mass Storage Working</li>
+    <li>USB Tethering</li>
 </ul>
 
 <h2>Source:</h2>
