@@ -1,8 +1,18 @@
-<h1>USB Arsenal for PinePhone</h1>
+<pre>
+ _ _  ___  ___   ___  ___  ___  ___  _ _  ___  _
+| | |/ __>| . > | . || . \/ __>| __>| \ || . || |
+| ' |\__ \| . \ |   ||   /\__ \| _> |   ||   || |_
+`___'<___/|___/ |_|_||_\_\<___/|___>|_\_||_|_||___|
+______________________________________for_PinePhone
+github|twitter: ShubhamVis98
+1) Enable Keyboard/Mouse
+2) Enable and Set Mass Storage Image
+3) Enable Tethering
+4) Disable All with Core
+5) Exit
 
-<img src="https://user-images.githubusercontent.com/43336210/178138927-de64a753-8b17-4345-b909-ae36412432a7.jpg" width="300px">
-
-
+Select Option:
+</pre>
 <h2>Installation:</h2>
 <ul>
     <h3>Using Makefile</h3>
