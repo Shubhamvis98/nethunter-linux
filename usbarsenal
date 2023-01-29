@@ -42,8 +42,42 @@ echo3()
 	echo -e '[!]'"$@"
 }
 
+check_status()
+{
+	[ -e $CONFIG_PATH ] && echo2 "Core Enabled on ${CONFIG_PATH}" || (echo3 'Core not Enabled' && exit)
+	[ -e $CONFIG_PATH/configs/s.1/hid.0 ] && echo2 'Keyboard Enabled'
+	[ -e $CONFIG_PATH/configs/s.1/hid.1 ] && echo2 'Mouse Enabled'
+	[ -e $CONFIG_PATH/configs/s.1/mass_storage.0 ] && echo2 'Mass Storage Enabled'
+	[ -e $CONFIG_PATH/configs/s.1/ecm.0 ] && echo2 'Tethering Enabled'
+	exit 0
+}
+
+usage()
+{
+	banner
+	echo "USAGE:"
+	echo "	$(basename $0) [OPTION] [FILE]"
+	echo "	-u #Usage"
+	echo "	-s #Status"
+	echo "	-h #Enable HID e.g. Keyboard and Mouse"
+	echo "	-t #Enable USB Tethering"
+	echo "	-m [Block/File Path to mount] #Enable Mass Storage"
+	echo "	-d Disable All"
+	echo "Optional Args: "
+	echo "	--idvendor [Vendor ID]"
+	echo "	--idproduct [Product ID]"
+	echo "	--manufacturer [Manufacturer]"
+	echo "	--product [Product]"
+	echo "	--serialno [Serial No.]"
+}
+
 setup_core()
 {
+	if [ -e $CONFIG_PATH ]
+	then
+		# echo2 'Core Already Enabled\n'
+		return
+	fi
 	VID="0x1D6B"
 	PID="0x0104"
 	SERIAL=`cat /etc/machine-id`
@@ -90,16 +124,13 @@ setup_core()
 mount_mass_storage()
 {
 	cd $CONFIG_PATH
-	echo -n '[?]Enter Image/Block device path: '
-	read IMG
+	IMG=$1
 	if [[ -f $IMG || -b $IMG ]]
 	then
-		udc d
 		echo "$IMG" > functions/mass_storage.0/lun.0/file
-		udc e
 		echo2 'Done\n\n'
 	else
-		echo3 'Incorrect Path'
+		echo3 'Incorrect File Path' "$IMG"
 		exit
 	fi
 }
@@ -169,44 +200,69 @@ disable_all()
 	echo1 'Done'
 }
 
-banner
+# banner
 chkroot
 
-if [ -e $CONFIG_PATH ]
-then
-	echo2 'Core Already Enabled\n'
-else
-	echo1 'Enabling Core'
-	setup_core
-	sleep 0.5
-	banner
+OPTARG=$(getopt -o :ushtdm: -l idvendor:,idproduct:,manufacturer:,product:,serialno: -- "$@")
+if [ "$?" != "0" ]; then
+  usage
+  exit
 fi
 
-PS3='Select Option: '
-COLUMNS=1
+eval set -- $OPTARG
 
-select opt in 'Enable Keyboard/Mouse' 'Enable and Set Mass Storage Image' 'Enable Tethering' 'Disable All with Core' 'Exit'
+while true
 do
-	case $opt in
-		'Enable Keyboard/Mouse')
+	case "$1" in
+		-u)
+			usage
+			exit;;
+		-s)
+			check_status
+			exit;;
+		-h)
+			setup_core
 			enable hid
-			;;
-		'Enable and Set Mass Storage Image')
-			mount_mass_storage
-			enable storage
-			;;
-		'Enable Tethering')
+			shift;;
+		-t)
+			setup_core
 			enable teth
-			;;
-		'Disable All with Core')
-			disable_all
-			echo -e '\n!!!Bye World!!!'
-			exit
-			;;
-		'Exit')
-			echo -e '\n!!!HAPPY HACKING!!!'
-			exit
-			;;
+			shift;;
+		-d)
+			if [ -e $CONFIG_PATH ]
+			then
+				disable_all
+				echo -e '\n!!!Happy Hacking!!!\n\n[USB Arsenal by @ShubhamVis98]'
+			else
+				echo2 'Already Disabled'
+			fi
+			exit;;
+		-m)
+			setup_core
+			mount_mass_storage $2
+			enable storage
+			shift 2;;
+		--idvendor)
+			setup_core
+			echo "$2" > $CONFIG_PATH/idVendor
+			shift 2;;
+		--idproduct)
+			setup_core
+			echo "$2" > $CONFIG_PATH/idProduct
+			shift 2;;
+		--manufacturer)
+			setup_core
+			echo "$2" > $CONFIG_PATH/strings/0x409/manufacturer
+			shift 2;;
+		--product)
+			setup_core
+			echo "$2" > $CONFIG_PATH/strings/0x409/product
+			shift 2;;
+		--serialno)
+			setup_core
+			echo "$2" > $CONFIG_PATH/strings/0x409/serialnumber
+			shift 2;;
+		*)
+			break;;
 	esac
 done
-

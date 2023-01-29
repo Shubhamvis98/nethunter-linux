@@ -1,3 +1,4 @@
+ 
 <pre>
  _ _  ___  ___   ___  ___  ___  ___  _ _  ___  _
 | | |/ __>| . > | . || . \/ __>| __>| \ || . || |
@@ -5,28 +6,23 @@
 `___'<___/|___/ |_|_||_\_\<___/|___>|_\_||_|_||___|
 ______________________________________for_PinePhone
 github|twitter: ShubhamVis98
-1) Enable Keyboard/Mouse
-2) Enable and Set Mass Storage Image
-3) Enable Tethering
-4) Disable All with Core
-5) Exit
 
-Select Option:
+USAGE:
+        usbarsenal [OPTION] [FILE]
+        -u #Usage
+        -s #Status
+        -h #Enable HID e.g. Keyboard and Mouse
+        -t #Enable USB Tethering
+        -m [Block/File Path to mount] #Enable Mass Storage
+        -d Disable All
+Optional Args:
+        --idvendor [Vendor ID]
+        --idproduct [Product ID]
+        --manufacturer [Manufacturer]
+        --product [Product]
+        --serialno [Serial No.]
 </pre>
-<h2>Installation:</h2>
-<ul>
-    <h3>Using Makefile</h3>
-    <ul>
-        <li>Execute: <code>make && make install</code></li>
-    </ul>
-</ul>
-<ul>
-    <h3>Manual Installation</h3>
-    <ol>
-        <li>Compile hid-gadget-test, rename the executable as "hidg" and put in "/usr/local/bin"</li>
-        <li>Copy/Move usbarsenal, duckyconverter and duckyprint in "/usr/local/bin"</li>
-    </ol>
-</ul>
+<h3>USB Arsenal GUI: <code>python usbarsenal-gui.py</code></h3>
 
 <h2>Features:</h2>
 <ul>
