@@ -242,13 +242,21 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTextView" id="status">
+          <object class="GtkScrolledWindow">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
-            <property name="editable">False</property>
-            <property name="wrap-mode">word</property>
-            <property name="cursor-visible">False</property>
-            <property name="monospace">True</property>
+            <property name="window-placement-set">False</property>
+            <property name="shadow-type">in</property>
+            <child>
+              <object class="GtkTextView" id="status">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="editable">False</property>
+                <property name="wrap-mode">word</property>
+                <property name="cursor-visible">False</property>
+                <property name="monospace">True</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="expand">True</property>
