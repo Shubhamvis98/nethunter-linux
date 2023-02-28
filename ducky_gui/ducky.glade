@@ -20,6 +20,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="wrap-mode">word</property>
+                <property name="monospace">True</property>
               </object>
             </child>
           </object>
@@ -35,8 +36,8 @@
             <property name="can-focus">False</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkButton" id="clear">
-                <property name="label" translatable="yes">CLEAR</property>
+              <object class="GtkButton" id="open">
+                <property name="label" translatable="yes">OPEN</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -48,8 +49,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="run">
-                <property name="label" translatable="yes">INJECT</property>
+              <object class="GtkButton" id="clear">
+                <property name="label" translatable="yes">CLEAR</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -60,10 +61,37 @@
                 <property name="position">1</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkButton" id="save">
+                <property name="label" translatable="yes">SAVE</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="inject">
+                <property name="label" translatable="yes">INJECT</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="padding">2</property>
             <property name="position">3</property>
           </packing>
         </child>
