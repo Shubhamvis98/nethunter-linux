@@ -1,0 +1,268 @@
+#!/bin/bash
+
+CONFIG_PATH='/sys/kernel/config/usb_gadget/hid'
+
+banner()
+{
+clear
+cat << 'EOF'
+ _ _  ___  ___   ___  ___  ___  ___  _ _  ___  _
+| | |/ __>| . > | . || . \/ __>| __>| \ || . || |
+| ' |\__ \| . \ |   ||   /\__ \| _> |   ||   || |_
+`___'<___/|___/ |_|_||_\_\<___/|___>|_\_||_|_||___|
+______________________________________for_PinePhone
+github|twitter: ShubhamVis98
+
+EOF
+sleep 0.5
+}
+
+chkroot()
+{
+	if [ ! `id -u` -eq 0 ]
+	then
+		echo '[!]Run as root'
+		sleep 0.2
+		exit 
+	fi
+}
+
+echo1()
+{
+	echo -e '[*]'"$@"
+}
+
+echo2()
+{
+	echo -e '[+]'"$@"
+}
+
+echo3()
+{
+	echo -e '[!]'"$@"
+}
+
+check_status()
+{
+	[ -e $CONFIG_PATH ] && echo2 "Core Enabled on ${CONFIG_PATH}" || (echo3 'Core not Enabled' && exit)
+	[ -e $CONFIG_PATH/configs/s.1/hid.0 ] && echo2 'Keyboard Enabled'
+	[ -e $CONFIG_PATH/configs/s.1/hid.1 ] && echo2 'Mouse Enabled'
+	[ -e $CONFIG_PATH/configs/s.1/mass_storage.0 ] && echo2 'Mass Storage Enabled'
+	[ -e $CONFIG_PATH/configs/s.1/ecm.0 ] && echo2 'Tethering Enabled'
+	exit 0
+}
+
+usage()
+{
+	banner
+	echo "USAGE:"
+	echo "	$(basename $0) [OPTION] [FILE]"
+	echo "	-u #Usage"
+	echo "	-s #Status"
+	echo "	-h #Enable HID e.g. Keyboard and Mouse"
+	echo "	-t #Enable USB Tethering"
+	echo "	-m [Block/File Path to mount] #Enable Mass Storage"
+	echo "	-d Disable All"
+	echo "Optional Args: "
+	echo "	--idvendor [Vendor ID]"
+	echo "	--idproduct [Product ID]"
+	echo "	--manufacturer [Manufacturer]"
+	echo "	--product [Product]"
+	echo "	--serialno [Serial No.]"
+}
+
+setup_core()
+{
+	if [ -e $CONFIG_PATH ]
+	then
+		# echo2 'Core Already Enabled\n'
+		return
+	fi
+	VID="0x1D6B"
+	PID="0x0104"
+	SERIAL=`cat /etc/machine-id`
+	MANUFACTURER='fossfrog'
+	PRODUCT='HID Gadget'
+
+	echo2 'Enabling configfs and libcomposite kernel modules'
+	modprobe configfs || exit 1
+	modprobe libcomposite || exit 1
+	mkdir $CONFIG_PATH
+	cd $CONFIG_PATH
+	mkdir -p strings/0x409 configs/s.1/strings/0x409
+	echo $VID > idVendor
+	echo $PID > idProduct
+	echo $SERIAL > strings/0x409/serialnumber
+	echo $MANUFACTURER > strings/0x409/manufacturer
+	echo $PRODUCT > strings/0x409/product
+	echo2 'Configuring Keyboard...'
+	cd $CONFIG_PATH
+	echo $VID > idVendor
+	echo $PID > idProduct
+	mkdir functions/hid.0
+	DESC_K='BQEJBqEBBQcZ4CnnFQAlAXUBlQiBApUBdQiBA5UFdQEFCBkBKQWRApUBdQORA5UGdQgVACVlBQcZACllgQDA'
+	echo 1 > functions/hid.0/protocol
+	echo 1 > functions/hid.0/subclass
+	echo 8 > functions/hid.0/report_length
+	echo $DESC_K | base64 -d > functions/hid.0/report_desc
+
+	echo2 'Configuring Mouse...'
+	mkdir functions/hid.1
+	DESC_M='BQEJAqEBCQGhAAUJGQEpBRUAJQGVBXUBgQKVAXUDgQEFAQkwCTEJOBWBJX91CJUDgQbAwA=='
+	echo 1 > functions/hid.1/protocol
+	echo 2 > functions/hid.1/subclass
+	echo 4 > functions/hid.1/report_length
+	echo $DESC_M | base64 -d > functions/hid.1/report_desc
+	
+	echo2 'Configuring Mass Storage...'
+	mkdir functions/mass_storage.0
+
+	echo2 "Configuring USB Tethering...\n"
+    mkdir functions/ecm.0
+}
+
+mount_mass_storage()
+{
+	cd $CONFIG_PATH
+	IMG=$1
+	if [[ -f $IMG || -b $IMG ]]
+	then
+		echo "$IMG" > functions/mass_storage.0/lun.0/file
+		echo2 'Done\n\n'
+	else
+		echo3 'Incorrect File Path' "$IMG"
+		exit
+	fi
+}
+
+enable()
+{
+	udc d
+	cd $CONFIG_PATH
+	case $1 in
+		hid)
+			echo2 'Enabling Keyboard and Mouse Interface'
+			ln -s functions/hid.0 configs/s.1 2>/dev/null
+			ln -s functions/hid.1 configs/s.1 2>/dev/null
+			;;
+		storage)
+			echo2 'Enabling Mass Storage'
+			ln -s functions/mass_storage.0 configs/s.1 2>/dev/null
+			;;
+		teth)
+			echo2 'Enabling Tethering'
+			ln -s functions/ecm.0 configs/s.1 2>/dev/null
+			if [ ! -e /etc/NetworkManager/system-connections/USB.nmconnection ]
+			then
+				nmcli connection add con-name USB ifname usb0 type ethernet ip4 10.66.0.1/24 > /dev/null
+				nmcli connection modify USB ipv4.route-metric 1500
+				nmcli connection modify USB ipv4.dns-priority 150
+				nmcli connection modify USB ipv4.method shared
+			fi
+			;;
+	esac
+	udc e
+}
+
+udc()
+{
+	if [ $1 == 'e' ]
+	then
+		echo1 'Enabling Gadget'
+		ls /sys/class/udc > $CONFIG_PATH/UDC
+	elif [ $1 == 'd' ]
+	then
+		echo1 'Disabling Gadget'
+		echo > $CONFIG_PATH/UDC 2>/dev/null
+	else
+		echo3 'Invalid Input'
+	fi
+}
+
+disable_all()
+{
+	set +e
+	echo1 'Disabling All Components'
+	echo2 'Moving to working directory...'
+	cd $CONFIG_PATH/..
+	echo2 'Disabling USB Gadget...'
+	udc d
+	echo2 'Removing Configurations...'
+	find */configs -type l -exec unlink {} \;
+	rmdir */configs/s.1/strings/0x409
+	rmdir */strings/0x409
+	rmdir */configs/s.1
+	rmdir */functions/*
+	rmdir *
+	nmcli connection | grep USB > /dev/null && nmcli connection delete USB > /dev/null
+	for mod in $(rmmod libcomposite 2>&1 | cut -d ':' -f4); do rmmod $mod; done
+	rmmod libcomposite
+	echo1 'Done'
+}
+
+# banner
+chkroot
+
+OPTARG=$(getopt -o :ushtdm: -l idvendor:,idproduct:,manufacturer:,product:,serialno: -- "$@")
+if [ "$?" != "0" ]; then
+  usage
+  exit
+fi
+
+eval set -- $OPTARG
+
+while true
+do
+	case "$1" in
+		-u)
+			usage
+			exit;;
+		-s)
+			check_status
+			exit;;
+		-h)
+			setup_core
+			enable hid
+			shift;;
+		-t)
+			setup_core
+			enable teth
+			shift;;
+		-d)
+			if [ -e $CONFIG_PATH ]
+			then
+				disable_all
+				echo -e '\n!!!Happy Hacking!!!\n\n[USB Arsenal by @ShubhamVis98]'
+			else
+				echo2 'Already Disabled'
+			fi
+			exit;;
+		-m)
+			setup_core
+			mount_mass_storage $2
+			enable storage
+			shift 2;;
+		--idvendor)
+			setup_core
+			echo "$2" > $CONFIG_PATH/idVendor
+			shift 2;;
+		--idproduct)
+			setup_core
+			echo "$2" > $CONFIG_PATH/idProduct
+			shift 2;;
+		--manufacturer)
+			setup_core
+			echo "$2" > $CONFIG_PATH/strings/0x409/manufacturer
+			shift 2;;
+		--product)
+			setup_core
+			echo "$2" > $CONFIG_PATH/strings/0x409/product
+			shift 2;;
+		--serialno)
+			setup_core
+			echo "$2" > $CONFIG_PATH/strings/0x409/serialnumber
+			shift 2;;
+		*)
+			break;;
+	esac
+done
