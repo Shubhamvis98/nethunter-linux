@@ -1,4 +1,3 @@
- 
 <pre>
  _ _  ___  ___   ___  ___  ___  ___  _ _  ___  _
 | | |/ __>| . > | . || . \/ __>| __>| \ || . || |
@@ -12,7 +11,8 @@ USAGE:
         -u #Usage
         -s #Status
         -h #Enable HID e.g. Keyboard and Mouse
-        -t #Enable USB Tethering
+        -t #Enable USB Tethering![Uploading 1_home.jpg…]()
+
         -m [Block/File Path to mount] #Enable Mass Storage
         -d Disable All
 Optional Args:
@@ -29,6 +29,7 @@ Optional Args:
     <li>Keyboard and Mouse Input Working</li>
     <li>USB Mass Storage Working</li>
     <li>USB Tethering</li>
+    <li>Ducky [A minimal Rucky like implementation]</li>
 </ul>
 
 <h2>Source:</h2>
