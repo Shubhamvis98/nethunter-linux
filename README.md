@@ -32,6 +32,14 @@ Optional Args:
     <li>Ducky [A minimal Rucky like implementation]</li>
 </ul>
 
+<h2>GUI Images:</h2>
+Home
+<img width="400px" src="https://user-images.githubusercontent.com/43336210/222528280-4eb80a68-3288-407c-b63e-b032d5405cdc.jpg">
+Arsenal
+<img width="400px" src="https://user-images.githubusercontent.com/43336210/222528334-5b42c758-2a0f-43ff-83bc-03654ecb414f.jpg">
+Ducky
+<img width="400px" src="https://user-images.githubusercontent.com/43336210/222528361-bbce68bf-3605-4b61-bf35-2c8d68224067.jpg">
+
 <h2>Source:</h2>
 <ul>
     <li>Nethunter duckyconverter script <b>[Works fine after some modifications]</b></li>
