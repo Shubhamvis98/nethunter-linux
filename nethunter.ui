@@ -8,6 +8,7 @@
       <object class="GtkNotebook">
         <property name="visible">True</property>
         <property name="can-focus">True</property>
+        <property name="scrollable">True</property>
         <child>
           <object class="GtkBox" id="home">
             <property name="visible">True</property>
