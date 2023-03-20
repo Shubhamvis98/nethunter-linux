@@ -45,7 +45,6 @@ USAGE: ducky.py [OPTION] [FILE/TEXT]
         -h      Help
         -f      Ducky_Script
         -t      Text
-
 </pre>
 
 <h2>GUI Images:</h2>
