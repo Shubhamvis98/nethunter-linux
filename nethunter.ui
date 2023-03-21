@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.40.0 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
-  <object class="GtkWindow" id="mainWindow">
+  <object class="GtkWindow" id="nh_main">
     <property name="can-focus">False</property>
     <child>
       <object class="GtkNotebook">
@@ -34,7 +34,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">v1.1-alpha
+                <property name="label" translatable="yes">v1.2-alpha
 by @ShubhamVis98</property>
                 <property name="justify">center</property>
               </object>
