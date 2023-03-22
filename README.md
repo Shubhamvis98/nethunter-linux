@@ -1,5 +1,8 @@
 <h2>NETHUNTER for PinePhone</h2>
+
 <h3>GUI: <code>python nethunter.py</code></h3>
+<h2>Preview:</h2>
+<img width="400px" src="https://user-images.githubusercontent.com/43336210/226916474-395781f5-2fb0-459e-84f6-693245a746dd.gif">
 <h2>Features:</h2>
 <ul>
     <li>Keyboard and Mouse Input Working</li>
@@ -46,14 +49,6 @@ USAGE: ducky.py [OPTION] [FILE/TEXT]
         -f      Ducky_Script
         -t      Text
 </pre>
-
-<h2>GUI Images:</h2>
-Home
-<img width="400px" src="https://user-images.githubusercontent.com/43336210/222528280-4eb80a68-3288-407c-b63e-b032d5405cdc.jpg">
-Arsenal
-<img width="400px" src="https://user-images.githubusercontent.com/43336210/222528334-5b42c758-2a0f-43ff-83bc-03654ecb414f.jpg">
-Ducky
-<img width="400px" src="https://user-images.githubusercontent.com/43336210/222528361-bbce68bf-3605-4b61-bf35-2c8d68224067.jpg">
 
 <h2>Source:</h2>
 <ul>
