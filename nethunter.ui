@@ -10,7 +10,7 @@
         <property name="can-focus">True</property>
         <property name="scrollable">True</property>
         <child>
-          <object class="GtkBox" id="home">
+          <object class="GtkBox" id="home_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
@@ -81,6 +81,9 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
               </packing>
             </child>
           </object>
+          <packing>
+            <property name="tab-expand">True</property>
+          </packing>
         </child>
         <child type="tab">
           <object class="GtkLabel" id="home_l">
@@ -93,7 +96,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="arsenal_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
@@ -367,6 +370,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
           </object>
           <packing>
             <property name="position">1</property>
+            <property name="tab-expand">True</property>
           </packing>
         </child>
         <child type="tab">
@@ -381,7 +385,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="ducky_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
@@ -392,7 +396,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
                 <property name="can-focus">True</property>
                 <property name="shadow-type">in</property>
                 <child>
-                  <object class="GtkTextView" id="editor">
+                  <object class="GtkTextView" id="ducky_editor">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="wrap-mode">word</property>
@@ -474,6 +478,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
           </object>
           <packing>
             <property name="position">2</property>
+            <property name="tab-expand">True</property>
           </packing>
         </child>
         <child type="tab">
@@ -488,7 +493,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="macchanger_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
@@ -629,16 +634,115 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
           </object>
           <packing>
             <property name="position">3</property>
+            <property name="tab-expand">True</property>
           </packing>
         </child>
         <child type="tab">
-          <object class="GtkLabel" id="macchanger">
+          <object class="GtkLabel" id="macchanger_l">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="label" translatable="yes">MAC Changer</property>
           </object>
           <packing>
             <property name="position">3</property>
+            <property name="tab-fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="deuther_tab">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">5</property>
+            <child>
+              <object class="GtkEntry" id="deauther_iface">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="placeholder-text" translatable="yes">Interface</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_deauther_scan">
+                <property name="label" translatable="yes">Scan Networks</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="shadow-type">in</property>
+                <child>
+                  <object class="GtkTextView" id="deauther_display">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="editable">False</property>
+                    <property name="wrap-mode">word</property>
+                    <property name="cursor-visible">False</property>
+                    <property name="accepts-tab">False</property>
+                    <property name="monospace">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="deauther_channel">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="caps-lock-warning">False</property>
+                <property name="placeholder-text" translatable="yes">Channel</property>
+                <property name="input-purpose">digits</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_deauth">
+                <property name="label" translatable="yes">Start Deauther</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">4</property>
+            <property name="tab-expand">True</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel" id="deauther_l">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">Deauther</property>
+          </object>
+          <packing>
+            <property name="position">4</property>
             <property name="tab-fill">False</property>
           </packing>
         </child>

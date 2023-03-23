@@ -109,7 +109,7 @@ class Arsenal(Functions):
 class Ducky(Functions):
     def __init__(self, builder):
         self.builder = builder
-        self.editor = self.builder.get_object('editor')
+        self.editor = self.builder.get_object('ducky_editor')
         self.btnOpen = self.builder.get_object('open')
         self.btnClear = self.builder.get_object('clear')
         self.btnSave = self.builder.get_object('save')
