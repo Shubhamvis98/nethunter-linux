@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # Author Shubham Vishwakarma
 # git/twitter: ShubhamVis98
 
