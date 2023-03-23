@@ -12,6 +12,12 @@
     <li>MAC Changer GUI Added</li>
 </ul>
 <h3>You can use all the above features through command-line as well if you don't want to use GUI</h3>
+<h2>Prerequisites:</h2>
+<ul>
+    <li>python3</li>
+    <li>python3-psutil</li>
+    <li>macchanger</li>
+</ul>
 <h3>Command: <code>bin/usbarsenal</code></h3>
 <pre>
  _ _  ___  ___   ___  ___  ___  ___  _ _  ___  _
