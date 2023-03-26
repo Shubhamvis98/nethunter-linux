@@ -295,13 +295,14 @@ class Deauther(Functions):
             display.set_text('[!]Select Interface First')
 
     def deauther_start(self, btn):
-        channel = int(self.channel.get_text())
-        iface = self.iface.get_text()
-        if iface:
-            self.start_monitor_mode(iface)
-            self.run = self.get_output(f'mdk3 {iface} d -c {channel}', wait=False)
+        display = self.display_buffer
+        channel = self.channel.get_text()
+        ifname = self.iface.get_active_text()
+        if ifname and channel:
+            self.start_monitor_mode(ifname)
+            self.run = self.get_output(f'mdk3 {ifname} d -c {channel}', wait=False)
         else:
-            display.set_text('[!]Select Interface First')
+            display.set_text('[!]Select Interface and Channel')
 
 class NHGUI(Gtk.Application):
     def __init__(self):
