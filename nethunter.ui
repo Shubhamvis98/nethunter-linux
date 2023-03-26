@@ -649,7 +649,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="deuther_tab">
+          <object class="GtkBox" id="deauther_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
@@ -703,7 +703,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="deauther_channel">
+              <object class="GtkEntry" id="deauth_channel">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="caps-lock-warning">False</property>

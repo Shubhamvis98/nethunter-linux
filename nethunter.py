@@ -10,12 +10,14 @@ from bin import ducky
 
 
 class Functions:
-    def get_output(self, cmd):
-        run = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
-        run.wait()
-        output = str(run.communicate()[0].decode())
+    def get_output(self, cmd, shell=False, wait=True):
+        if shell:
+            run = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+        else:
+            run = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
+        output = str(run.communicate()[0].decode()) if wait else ''
         returncode = run.poll()
-        return [output, returncode]
+        return [output, returncode, run]
     
     def notification(self, msg):
         try:
@@ -23,6 +25,34 @@ class Functions:
             msg.show()
         except:
             pass
+
+    def start_monitor_mode(self, iface, mode=0):
+        '''
+        mode:
+            0 ---> airmon-ng
+            1 ---> iwconfig
+        '''
+        self.get_output(f'ip link set {iface} down')
+        if mode == 0:
+            self.get_output(f'airmon-ng start {iface}')
+        elif mode ==1:
+            self.get_output(f'iwconfig {iface} mode monitor')
+        self.get_output(f'ip link set {iface} up')
+
+
+    def stop_monitor_mode(self, iface, mode=0):
+        '''
+        mode:
+            0 ---> airmon-ng
+            1 ---> iwconfig
+        '''
+        self.get_output(f'ip link set {iface} down')
+        if mode == 0:
+            self.get_output(f'airmon-ng stop {iface}')
+        elif mode ==1:
+            self.get_output(f'iwconfig {iface} mode managed')
+        self.get_output(f'ip link set {iface} up')
+
 
 class Arsenal(Functions):
     def __init__(self, builder):
@@ -185,7 +215,7 @@ class MACChanger(Functions):
 
     def getifaces(self):
         tmp = psutil.net_if_addrs()
-        iface_list = list(tmp.keys())
+        iface_list = sorted(list(tmp.keys()))
         ifindex = 0 if 'wlan0' not in iface_list else iface_list.index('wlan0')
         for iface in range(len(iface_list)):
             self.maciface.append_text(iface_list[iface])
@@ -229,6 +259,37 @@ class MACChanger(Functions):
             self.notification('!!! MAC NOT CHANGED !!!')
         self.on_iface_change(self.maciface)
 
+class Deauther(Functions):
+    def __init__(self, builder):
+        self.builder = builder
+        self.iface = self.builder.get_object('deauther_iface')
+        self.btnscan = self.builder.get_object('btn_deauther_scan')
+        self.display = self.builder.get_object('deauther_display')
+        self.channel = self.builder.get_object('deauth_channel')
+        self.btndeauth = self.builder.get_object('btn_deauth')
+
+        self.btnscan.connect('clicked', self.deauther_scan)
+        self.btndeauth.connect('clicked', self.deauther_start)
+        self.display_buffer = self.display.get_buffer()
+
+    def deauther_scan(self, btn):
+        display = self.display_buffer
+        iface = self.iface.get_text()
+        if iface:
+            out = self.get_output(f"iwlist {iface} scanning | grep 'ESSID\|Frequency' | tac", shell=True)
+            display.set_text(out[0].replace(' ', '').replace('Frequency', 'Freq').replace('Channel', 'Ch '))
+        else:
+            display.set_text('[!]Select Interface First')
+
+    def deauther_start(self, btn):
+        channel = int(self.channel.get_text())
+        iface = self.iface.get_text()
+        if iface:
+            self.start_monitor_mode(iface)
+            self.run = self.get_output(f'mdk3 {iface} d -c {channel}', wait=False)
+        else:
+            display.set_text('[!]Select Interface First')
+
 class NHGUI(Gtk.Application):
     def __init__(self):
         Gtk.Application.__init__(self, application_id="in.fossfrog.nh")
@@ -242,6 +303,7 @@ class NHGUI(Gtk.Application):
         Arsenal(builder)
         Ducky(builder)
         MACChanger(builder)
+        Deauther(builder)
 
         # Get The main window from the glade file
         window = builder.get_object("nh_main")
