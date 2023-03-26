@@ -272,6 +272,7 @@ class Deauther(Functions):
         self.btnscan = self.builder.get_object('btn_deauther_scan')
         self.display = self.builder.get_object('deauther_display')
         self.channel = self.builder.get_object('deauth_channel')
+        self.monmode = self.builder.get_object('deauth_mon_mode')
         self.btndeauth = self.builder.get_object('btn_deauth')
 
         self.btnscan.connect('clicked', self.deauther_scan)
@@ -283,6 +284,10 @@ class Deauther(Functions):
         for i in ifaces:
             self.iface.append_text(i)
         self.iface.set_active(0 if 'wlan0' not in ifaces else ifaces.index('wlan0'))
+        mon_modes = ['airmon-ng', 'iwconfig']
+        for i in mon_modes:
+            self.monmode.append_text(i)
+        self.monmode.set_active(1)
 
 
     def deauther_scan(self, btn):
@@ -298,15 +303,17 @@ class Deauther(Functions):
         display = self.display_buffer
         channel = self.channel.get_text()
         ifname = self.iface.get_active_text()
+        monmode = self.monmode.get_active()
         if self.btndeauth.get_label() == 'Start Deauther':
             if ifname and channel:
-                self.start_monitor_mode(ifname)
+                self.start_monitor_mode(ifname, monmode)
                 self.run = self.get_output(f'mdk4 {ifname} d -c {channel} -s 100', wait=False)
                 self.btndeauth.set_label('Stop Deauther')
             else:
                 display.set_text('[!]Select Interface and Channel')
         elif self.btndeauth.get_label() == 'Stop Deauther':
             self.run[2].kill()
+            self.stop_monitor_mode(ifname, monmode)
             self.btndeauth.set_label('Start Deauther')
 
 class NHGUI(Gtk.Application):
