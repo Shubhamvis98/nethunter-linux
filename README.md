@@ -2,7 +2,8 @@
 
 <h3>GUI: <code>python nethunter.py</code></h3>
 <h2>Preview:</h2>
-<img width="400px" src="https://user-images.githubusercontent.com/43336210/226916474-395781f5-2fb0-459e-84f6-693245a746dd.gif">
+<img width="400px" src="https://user-images.githubusercontent.com/43336210/227779934-d7cfcb1f-8ce4-41b1-b8e5-fa02f3828be5.gif">
+
 <h2>Features:</h2>
 <ul>
     <li>Keyboard and Mouse Input Working</li>
