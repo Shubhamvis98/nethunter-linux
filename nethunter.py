@@ -287,9 +287,9 @@ class Deauther(Functions):
 
     def deauther_scan(self, btn):
         display = self.display_buffer
-        iface = self.iface.get_text()
-        if iface:
-            out = self.get_output(f"iwlist {iface} scanning | grep 'ESSID\|Frequency' | tac", shell=True)
+        ifname = self.iface.get_active_text()
+        if ifname:
+            out = self.get_output(f"iwlist {ifname} scanning | grep 'ESSID\|Frequency' | tac", shell=True)
             display.set_text(out[0].replace(' ', '').replace('Frequency', 'Freq').replace('Channel', 'Ch '))
         else:
             display.set_text('[!]Select Interface First')
