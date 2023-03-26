@@ -11,6 +11,7 @@
     <li>USB Tethering</li>
     <li>Ducky [A minimal Rucky like implementation]</li>
     <li>MAC Changer GUI Added</li>
+    <li>Deauther</li>
 </ul>
 <h3>You can use all the above features through command-line as well if you don't want to use GUI</h3>
 <h2>Prerequisites:</h2>
