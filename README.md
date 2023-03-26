@@ -17,6 +17,7 @@
     <li>python3</li>
     <li>python3-psutil</li>
     <li>macchanger</li>
+    <li>mdk4</li>
 </ul>
 <h3>Command: <code>bin/usbarsenal</code></h3>
 <pre>

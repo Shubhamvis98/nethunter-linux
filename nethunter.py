@@ -275,7 +275,7 @@ class Deauther(Functions):
         self.btndeauth = self.builder.get_object('btn_deauth')
 
         self.btnscan.connect('clicked', self.deauther_scan)
-        self.btndeauth.connect('clicked', self.deauther_start)
+        self.btndeauth.connect('clicked', self.deauther_run)
         self.display_buffer = self.display.get_buffer()
 
     def run(self):
@@ -294,15 +294,20 @@ class Deauther(Functions):
         else:
             display.set_text('[!]Select Interface First')
 
-    def deauther_start(self, btn):
+    def deauther_run(self, btn):
         display = self.display_buffer
         channel = self.channel.get_text()
         ifname = self.iface.get_active_text()
-        if ifname and channel:
-            self.start_monitor_mode(ifname)
-            self.run = self.get_output(f'mdk3 {ifname} d -c {channel}', wait=False)
-        else:
-            display.set_text('[!]Select Interface and Channel')
+        if self.btndeauth.get_label() == 'Start Deauther':
+            if ifname and channel:
+                self.start_monitor_mode(ifname)
+                self.run = self.get_output(f'mdk4 {ifname} d -c {channel} -s 100', wait=False)
+                self.btndeauth.set_label('Stop Deauther')
+            else:
+                display.set_text('[!]Select Interface and Channel')
+        elif self.btndeauth.get_label() == 'Stop Deauther':
+            self.run[2].kill()
+            self.btndeauth.set_label('Start Deauther')
 
 class NHGUI(Gtk.Application):
     def __init__(self):
