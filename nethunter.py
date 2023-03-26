@@ -70,8 +70,9 @@ class Arsenal(Functions):
 
         self.btnEn.connect('clicked', self.enable)
         self.btnDis.connect('clicked', self.disable)
-
         self.status_buffer = self.status.get_buffer()
+
+    def run(self):
         self.setDefault()
     
     def getMassStoragePath(self):
@@ -152,6 +153,9 @@ class Ducky(Functions):
 
         self.editor_buffer = self.editor.get_buffer()
 
+    def run(self):
+        pass
+
     def clearEditor(self, btn):
         self.editor_buffer.set_text('')
 
@@ -211,15 +215,17 @@ class MACChanger(Functions):
         self.btnranmac.connect('clicked', self.gen_random_mac)
         self.btnchmac.connect('clicked', self.chmac)
         self.btnrstmac.connect('clicked', self.reset_mac)
-        self.getifaces()
+
+    def run(self):
+        ifaces = self.getifaces()
+        for i in ifaces:
+            self.maciface.append_text(i)
+        self.maciface.set_active(0 if 'wlan0' not in ifaces else ifaces.index('wlan0'))
 
     def getifaces(self):
         tmp = psutil.net_if_addrs()
         iface_list = sorted(list(tmp.keys()))
-        ifindex = 0 if 'wlan0' not in iface_list else iface_list.index('wlan0')
-        for iface in range(len(iface_list)):
-            self.maciface.append_text(iface_list[iface])
-        self.maciface.set_active(ifindex)
+        return iface_list
     
     def getmac(self, iface):
         tmp = psutil.net_if_addrs()
@@ -272,6 +278,13 @@ class Deauther(Functions):
         self.btndeauth.connect('clicked', self.deauther_start)
         self.display_buffer = self.display.get_buffer()
 
+    def run(self):
+        ifaces = MACChanger(self.builder).getifaces()
+        for i in ifaces:
+            self.iface.append_text(i)
+        self.iface.set_active(0 if 'wlan0' not in ifaces else ifaces.index('wlan0'))
+
+
     def deauther_scan(self, btn):
         display = self.display_buffer
         iface = self.iface.get_text()
@@ -300,10 +313,10 @@ class NHGUI(Gtk.Application):
         builder.add_from_file("nethunter.ui")
 
         # Initialize Functions
-        Arsenal(builder)
-        Ducky(builder)
-        MACChanger(builder)
-        Deauther(builder)
+        Arsenal(builder).run()
+        Ducky(builder).run()
+        MACChanger(builder).run()
+        Deauther(builder).run()
 
         # Get The main window from the glade file
         window = builder.get_object("nh_main")

@@ -655,15 +655,30 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
             <property name="orientation">vertical</property>
             <property name="spacing">5</property>
             <child>
-              <object class="GtkEntry" id="deauther_iface">
+              <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="placeholder-text" translatable="yes">Interface</property>
+                <property name="can-focus">False</property>
+                <property name="xpad">5</property>
+                <property name="label" translatable="yes">Select Interface:</property>
+                <property name="xalign">0</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="deauther_iface">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="border-width">0</property>
+                <property name="active">0</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -676,7 +691,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -699,7 +714,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -713,7 +728,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
@@ -726,7 +741,7 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">4</property>
+                <property name="position">5</property>
               </packing>
             </child>
           </object>
