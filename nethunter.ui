@@ -34,7 +34,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">v1.2-alpha
+                <property name="label" translatable="yes">v1.3-alpha
 by @ShubhamVis98</property>
                 <property name="justify">center</property>
               </object>
