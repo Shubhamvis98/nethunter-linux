@@ -2,10 +2,10 @@
 # Author Shubham Vishwakarma
 # git/twitter: ShubhamVis98
 
-import gi, subprocess, psutil, random
+import gi, subprocess, psutil, random, json, datetime
 gi.require_version('Gtk', '3.0')
 gi.require_version('Notify', '0.7')
-from gi.repository import Gtk, Gio, Notify
+from gi.repository import Gtk, Gio, Pango, Notify
 from bin import ducky
 
 
@@ -316,6 +316,70 @@ class Deauther(Functions):
             self.stop_monitor_mode(ifname, monmode)
             self.btndeauth.set_label('Start Deauther')
 
+class CustomCommands(Functions):
+    def __init__(self, builder):
+        self.builder = builder
+        self.config_file = 'test.json'
+        self.default_config = {"app_name": "Nethunter", "last_updated": str(datetime.datetime.now()), "commands_list": []}
+        self.btnadd = self.builder.get_object('btn_ccmd_add')
+        self.btnrm = self.builder.get_object('btn_ccmd_rm')
+
+        self.btnadd.connect('clicked', self.add_command)
+        self.btnrm.connect('clicked', self.rm_command)
+        self.reload()
+    
+    def add_command(self, btn):
+        pass
+
+    def rm_command(self, btn):
+        pass
+
+    def read_config(self):
+        with open(self.config_file, "r") as f:
+            return json.load(f)
+    
+    def write_config(self, c):
+        with open(self.config_file, "w") as f:
+            json.dump(c, f, indent=2)
+
+    def update_command(self, label, new_command=None, delete=False):
+        index = None
+        config = self.read_config()
+        for i, entry in enumerate(config["commands_list"]):
+            if entry["label"] == label:
+                index = i
+                break
+        if index is not None:
+            if delete:
+                del config["commands_list"][index]
+            else:
+                config["commands_list"][index]["command"] = new_command
+            config["last_updated"] = str(datetime.datetime.now())
+            self.write_config(config)
+
+    def reload(self):
+        cmd_list = self.builder.get_object("ccmds_list")
+        config = self.read_config()
+        
+        for c in config['commands_list']:
+            label_txt = c['label']
+            cmd = c['command']
+
+            cmd_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+            label = Gtk.Label(label=label_txt)
+            label.set_property("margin", 5)
+            label.set_ellipsize(Pango.EllipsizeMode.END)
+            btnexec = Gtk.Button(label="EXECUTE")
+            btnexec.set_property("margin", 5)
+
+            cmd_box.pack_start(label, False, False, 0)
+            cmd_box.pack_end(btnexec, False, False, 0)
+
+            cmd_list.pack_start(cmd_box, False, False, 0)
+
+    def run(self):
+        pass
+
 class NHGUI(Gtk.Application):
     def __init__(self):
         Gtk.Application.__init__(self, application_id="in.fossfrog.nh")
@@ -330,6 +394,7 @@ class NHGUI(Gtk.Application):
         Ducky(builder).run()
         MACChanger(builder).run()
         Deauther(builder).run()
+        CustomCommands(builder).run()
 
         # Get The main window from the glade file
         window = builder.get_object("nh_main")
