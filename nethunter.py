@@ -7,7 +7,7 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Notify', '0.7')
 from gi.repository import Gtk, Gio, Pango, Notify
 from bin import ducky
-import os
+
 
 class Functions:
     def get_output(self, cmd, shell=False, wait=True):
