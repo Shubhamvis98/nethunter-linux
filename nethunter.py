@@ -367,6 +367,7 @@ class CustomCommands(Functions):
         cmd_list = self.builder.get_object("ccmds_list")
         cmd_list.foreach(lambda child: cmd_list.remove(child))
         config = self.read_config()
+        cmd_list.show_all()
         for c in config['commands_list']:
             label_txt = c['label']
             cmd = c['command']
@@ -375,10 +376,13 @@ class CustomCommands(Functions):
             label = Gtk.Label(label=label_txt, margin=5)
             label.set_ellipsize(Pango.EllipsizeMode.END)
             self.btnexec = Gtk.Button(label="EXECUTE", margin=5)
+            self.btndel = Gtk.Button(label="X", margin=5)
             self.btnexec.connect('clicked', self.execute_command, cmd)
+            self.btndel.connect('clicked', self.delete_command, label_txt)
 
             self.cmd_box.pack_start(label, False, False, 0)
             self.cmd_box.pack_end(self.btnexec, False, False, 0)
+            self.cmd_box.pack_end(self.btndel, False, False, 0)
 
             cmd_list.pack_start(self.cmd_box, False, False, 0)
         cmd_list.show_all()
@@ -400,6 +404,19 @@ class CustomCommands(Functions):
         else:
             self.notification(f"{new_entry['label']}: [!]Already Exists")
         self.write_config(config)
+        self.reload()
+
+    def delete_command(self, btn, label):
+        index = None
+        config = self.read_config()
+        for i, entry in enumerate(config["commands_list"]):
+            if entry["label"] == label:
+                index = i
+                break
+        if index is not None:
+            del config["commands_list"][index]
+            config["last_updated"] = str(datetime.datetime.now())
+            self.write_config(config)
         self.reload()
 
     def update_command(self, label, new_cmd=None, delete=False):
