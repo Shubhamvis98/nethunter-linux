@@ -365,17 +365,21 @@ class CustomCommands(Functions):
             label_txt = c['label']
             cmd = c['command']
 
-            cmd_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+            self.cmd_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
             label = Gtk.Label(label=label_txt)
             label.set_property("margin", 5)
             label.set_ellipsize(Pango.EllipsizeMode.END)
-            btnexec = Gtk.Button(label="EXECUTE")
-            btnexec.set_property("margin", 5)
+            self.btnexec = Gtk.Button(label="EXECUTE")
+            self.btnexec.set_property("margin", 5)
+            self.btnexec.connect('clicked', self.execute_command)
 
-            cmd_box.pack_start(label, False, False, 0)
-            cmd_box.pack_end(btnexec, False, False, 0)
+            self.cmd_box.pack_start(label, False, False, 0)
+            self.cmd_box.pack_end(self.btnexec, False, False, 0)
 
-            cmd_list.pack_start(cmd_box, False, False, 0)
+            cmd_list.pack_start(self.cmd_box, False, False, 0)
+
+    def execute_command(self, btn):
+        pass
 
     def run(self):
         pass
