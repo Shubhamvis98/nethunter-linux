@@ -7,7 +7,7 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Notify', '0.7')
 from gi.repository import Gtk, Gio, Pango, Notify
 from bin import ducky
-
+import os
 
 class Functions:
     def get_output(self, cmd, shell=False, wait=True):
@@ -319,20 +319,18 @@ class Deauther(Functions):
 class CustomCommands(Functions):
     def __init__(self, builder):
         self.builder = builder
-        self.config_file = 'test.json'
+        self.config_file = 'configuration.json'
         self.default_config = {"app_name": "Nethunter", "last_updated": str(datetime.datetime.now()), "commands_list": []}
         self.btnadd = self.builder.get_object('btn_ccmd_add')
         self.btnrm = self.builder.get_object('btn_ccmd_rm')
 
-        self.btnadd.connect('clicked', self.add_command)
-        self.btnrm.connect('clicked', self.rm_command)
-        self.reload()
-    
-    def add_command(self, btn):
-        pass
-
-    def rm_command(self, btn):
-        pass
+        self.btnadd.connect('clicked', lambda _: self.add_command(label='hello', cmd='echo hello'))
+        self.btnrm.connect('clicked', lambda _: self.update_command(label='hello', delete=True))
+        try:
+            self.reload()
+        except:
+            self.write_config(self.default_config)
+            self.reload()
 
     def read_config(self):
         with open(self.config_file, "r") as f:
@@ -342,25 +340,10 @@ class CustomCommands(Functions):
         with open(self.config_file, "w") as f:
             json.dump(c, f, indent=2)
 
-    def update_command(self, label, new_command=None, delete=False):
-        index = None
-        config = self.read_config()
-        for i, entry in enumerate(config["commands_list"]):
-            if entry["label"] == label:
-                index = i
-                break
-        if index is not None:
-            if delete:
-                del config["commands_list"][index]
-            else:
-                config["commands_list"][index]["command"] = new_command
-            config["last_updated"] = str(datetime.datetime.now())
-            self.write_config(config)
-
     def reload(self):
         cmd_list = self.builder.get_object("ccmds_list")
+        cmd_list.foreach(lambda child: cmd_list.remove(child))
         config = self.read_config()
-        
         for c in config['commands_list']:
             label_txt = c['label']
             cmd = c['command']
@@ -371,15 +354,43 @@ class CustomCommands(Functions):
             label.set_ellipsize(Pango.EllipsizeMode.END)
             self.btnexec = Gtk.Button(label="EXECUTE")
             self.btnexec.set_property("margin", 5)
-            self.btnexec.connect('clicked', self.execute_command)
+            self.btnexec.connect('clicked', self.execute_command, cmd)
 
             self.cmd_box.pack_start(label, False, False, 0)
             self.cmd_box.pack_end(self.btnexec, False, False, 0)
 
             cmd_list.pack_start(self.cmd_box, False, False, 0)
+        cmd_list.show_all()
 
-    def execute_command(self, btn):
-        pass
+    def add_command(self, label, cmd):
+        config = self.read_config()
+        new_entry = {'label': label, "command": cmd}
+        if not any(entry['label'] == new_entry['label'] for entry in config["commands_list"]):
+            config["commands_list"].append(new_entry)
+            self.write_config(config)
+        else:
+            print(f"An entry with name '{new_entry['label']}' already exists in the configuration.")
+        self.write_config(config)
+        self.reload()
+
+    def update_command(self, label, new_cmd=None, delete=False):
+        index = None
+        config = self.read_config()
+        for i, entry in enumerate(config["commands_list"]):
+            if entry["label"] == label:
+                index = i
+                break
+        if index is not None:
+            if delete:
+                del config["commands_list"][index]
+            else:
+                config["commands_list"][index]["command"] = new_cmd
+            config["last_updated"] = str(datetime.datetime.now())
+            self.write_config(config)
+        self.reload()
+
+    def execute_command(self, btn, cmd):
+        print(f'OUTPUT: {self.get_output(cmd)[0]}')
 
     def run(self):
         pass
