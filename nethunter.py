@@ -58,14 +58,23 @@ class Functions:
         label = label if label is not None else 'Label'
         cmd = cmd if cmd is not None else 'Command'
         dialog = Gtk.Dialog(title)
-        dialog.add_buttons(
-            Gtk.STOCK_OK,
-            Gtk.ResponseType.OK,
-            Gtk.STOCK_CANCEL,
-            Gtk.ResponseType.CANCEL,
-            Gtk.STOCK_DELETE,
-            Gtk.ResponseType.NO
-        )
+        if title == 'Update Command':
+            dialog.add_buttons(
+                Gtk.STOCK_OK,
+                Gtk.ResponseType.OK,
+                Gtk.STOCK_CANCEL,
+                Gtk.ResponseType.CANCEL,
+                Gtk.STOCK_DELETE,
+                Gtk.ResponseType.NO
+            )
+        else:
+            dialog.add_buttons(
+                Gtk.STOCK_OK,
+                Gtk.ResponseType.OK,
+                Gtk.STOCK_CANCEL,
+                Gtk.ResponseType.CANCEL,
+            )
+
         box_label = Gtk.Entry(text=label, margin=5)
         box_cmd = Gtk.Entry(text=cmd, margin=5)
         dialog.vbox.pack_start(box_label, True, True, 0)
