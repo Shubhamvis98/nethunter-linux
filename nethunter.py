@@ -403,7 +403,6 @@ class CustomCommands(Functions):
         self.reload()
 
     def update_command(self, label, new_cmd=None, delete=False):
-        self.btnexec.hide()
         index = None
         config = self.read_config()
         for i, entry in enumerate(config["commands_list"]):
