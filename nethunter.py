@@ -77,6 +77,22 @@ class Functions:
         dialog.destroy()
         return ret
 
+class Home(Functions):
+    def __init__(self, builder):
+        self.builder = builder
+        self.app_name = self.builder.get_object('app_name')
+        self.app_version = self.builder.get_object('app_version')
+        self.app_desc = self.builder.get_object('app_desc')
+        self.app_warn = self.builder.get_object('app_warn')
+
+        self.app_name.set_label('NETHUNTER')
+        self.app_version.set_label('v1.3-alpha\nby @ShubhamVis98')
+        self.app_desc.set_label("\nFEATURES:\n- USB Arsenal\n- HID, Mass Storage and USB Tethering\n- Ducky implemented but maybe some keys won't work\n- MAC Changer\n- Deauther\n- Custom Commands\n\ngit/twitter: ShubhamVis98\nyoutube: fossfrog\n")
+        self.app_warn.set_label("!!!WARNING!!!\nDON'T MISUSE YOUR SUPERPOWERS")
+    
+    def run(self):
+        pass
+
 class Arsenal(Functions):
     def __init__(self, builder):
         self.builder = builder
@@ -451,6 +467,7 @@ class NHGUI(Gtk.Application):
         builder.add_from_file("nethunter.ui")
 
         # Initialize Functions
+        Home(builder).run()
         Arsenal(builder).run()
         Ducky(builder).run()
         MACChanger(builder).run()

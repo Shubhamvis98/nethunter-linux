@@ -15,7 +15,7 @@
             <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkLabel" id="title">
+              <object class="GtkLabel" id="app_name">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">NETHUNTER</property>
@@ -31,11 +31,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="app_version">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">v1.3-alpha
-by @ShubhamVis98</property>
+                <property name="label" translatable="yes">$version</property>
                 <property name="justify">center</property>
               </object>
               <packing>
@@ -45,20 +44,10 @@ by @ShubhamVis98</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="app_desc">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">
-FEATURES:
-- USB Arsenal
-- HID, Mass Storage and USB Tethering
-- Ducky implemented but maybe some keys won't work
-- MAC Changer
-- Deauther
-- Custom Commands
-
-git/twitter: ShubhamVis98
-youtube: fossfrog</property>
+                <property name="label" translatable="yes">$desc</property>
                 <property name="xalign">0.05000000074505806</property>
               </object>
               <packing>
@@ -68,11 +57,10 @@ youtube: fossfrog</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="app_warn">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">!!!WARNING!!!
-DON'T MISUSE YOUR SUPERPOWERS</property>
+                <property name="label" translatable="yes">$app_warn</property>
                 <property name="justify">center</property>
               </object>
               <packing>
