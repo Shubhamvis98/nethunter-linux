@@ -52,7 +52,34 @@ class Functions:
         elif mode ==1:
             self.get_output(f'iwconfig {iface} mode managed')
         self.get_output(f'ip link set {iface} up')
+    
+    def prompt(self):
+        dialog = Gtk.Dialog(title="Add Command")
+        dialog.add_buttons(
+            Gtk.STOCK_OK,
+            Gtk.ResponseType.OK,
+            Gtk.STOCK_CANCEL,
+            Gtk.ResponseType.CANCEL
+        )
+        label = Gtk.Entry(text='Label', margin=5)
+        cmd = Gtk.Entry(text='echo hello world', margin=5)
+        dialog.vbox.pack_start(label, True, True, 0)
+        dialog.vbox.pack_start(cmd, True, True, 0)
+        dialog.show_all()
 
+        response = dialog.run()
+        dialog.destroy()
+
+        if response == Gtk.ResponseType.OK:
+            label = label.get_text()
+            cmd = cmd.get_text()
+        elif response == Gtk.ResponseType.CANCEL:
+            return None
+
+        if (label and cmd) != '':
+            return [label, cmd]
+        else:
+            return 1
 
 class Arsenal(Functions):
     def __init__(self, builder):
@@ -324,7 +351,7 @@ class CustomCommands(Functions):
         self.btnadd = self.builder.get_object('btn_ccmd_add')
         self.btnrm = self.builder.get_object('btn_ccmd_rm')
 
-        self.btnadd.connect('clicked', lambda _: self.add_command(label='hello', cmd='echo hello'))
+        self.btnadd.connect('clicked', self.add_command)
         self.btnrm.connect('clicked', lambda _: self.update_command(label='hello', delete=True))
         try:
             self.reload()
@@ -336,9 +363,9 @@ class CustomCommands(Functions):
         with open(self.config_file, "r") as f:
             return json.load(f)
     
-    def write_config(self, c):
+    def write_config(self, config):
         with open(self.config_file, "w") as f:
-            json.dump(c, f, indent=2)
+            json.dump(config, f, indent=2)
 
     def reload(self):
         cmd_list = self.builder.get_object("ccmds_list")
@@ -350,7 +377,7 @@ class CustomCommands(Functions):
 
             self.cmd_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
             label = Gtk.Label(label=label_txt)
-            label.set_property("margin", 5)
+            # label.set_property("margin", 5)
             label.set_ellipsize(Pango.EllipsizeMode.END)
             self.btnexec = Gtk.Button(label="EXECUTE")
             self.btnexec.set_property("margin", 5)
@@ -362,9 +389,17 @@ class CustomCommands(Functions):
             cmd_list.pack_start(self.cmd_box, False, False, 0)
         cmd_list.show_all()
 
-    def add_command(self, label, cmd):
+    def add_command(self, btn):
+        get_inp = self.prompt()
+        if get_inp is None:
+            print('[!]Cancelled...')
+            return 0
+        elif get_inp == 1:
+            print('[!]Invalid Input...')
+            return 0
+
         config = self.read_config()
-        new_entry = {'label': label, "command": cmd}
+        new_entry = {'label': get_inp[0], "command": get_inp[1]}
         if not any(entry['label'] == new_entry['label'] for entry in config["commands_list"]):
             config["commands_list"].append(new_entry)
             self.write_config(config)
@@ -390,7 +425,7 @@ class CustomCommands(Functions):
         self.reload()
 
     def execute_command(self, btn, cmd):
-        print(f'OUTPUT: {self.get_output(cmd)[0]}')
+        self.get_output(cmd, shell=True, wait=False)[0]
 
     def run(self):
         pass
