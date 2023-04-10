@@ -54,9 +54,10 @@ class Functions:
         self.get_output(f'ip link set {iface} up')
     
     def prompt(self, label=None, cmd=None):
+        title = 'Update Command' if label else 'Add Command'
         label = label if label is not None else 'Label'
         cmd = cmd if cmd is not None else 'Command'
-        dialog = Gtk.Dialog(title="Add Command")
+        dialog = Gtk.Dialog(title)
         dialog.add_buttons(
             Gtk.STOCK_OK,
             Gtk.ResponseType.OK,
@@ -369,10 +370,8 @@ class CustomCommands(Functions):
         self.config_file = 'configuration.json'
         self.default_config = {"app_name": "Nethunter", "last_updated": str(datetime.datetime.now()), "commands_list": []}
         self.btnadd = self.builder.get_object('btn_ccmd_add')
-        self.btnrm = self.builder.get_object('btn_ccmd_rm')
 
         self.btnadd.connect('clicked', self.add_command)
-        self.btnrm.connect('clicked', lambda _: self.update_command(label='hello', delete=True))
         try:
             self.reload()
         except:
