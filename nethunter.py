@@ -61,25 +61,21 @@ class Functions:
             Gtk.STOCK_CANCEL,
             Gtk.ResponseType.CANCEL
         )
-        label = Gtk.Entry(text='Label', margin=5)
-        cmd = Gtk.Entry(text='echo hello world', margin=5)
-        dialog.vbox.pack_start(label, True, True, 0)
-        dialog.vbox.pack_start(cmd, True, True, 0)
+        box_label = Gtk.Entry(text='Label', margin=5)
+        box_cmd = Gtk.Entry(text='Command', margin=5)
+        dialog.vbox.pack_start(box_label, True, True, 0)
+        dialog.vbox.pack_start(box_cmd, True, True, 0)
         dialog.show_all()
 
         response = dialog.run()
-        dialog.destroy()
-
         if response == Gtk.ResponseType.OK:
-            label = label.get_text()
-            cmd = cmd.get_text()
+            label = box_label.get_text()
+            cmd = box_cmd.get_text()
+            ret = [label, cmd] if (label and cmd) != '' else None
         elif response == Gtk.ResponseType.CANCEL:
-            return None
-
-        if (label and cmd) != '':
-            return [label, cmd]
-        else:
-            return 1
+            ret = False
+        dialog.destroy()
+        return ret
 
 class Arsenal(Functions):
     def __init__(self, builder):
@@ -376,11 +372,9 @@ class CustomCommands(Functions):
             cmd = c['command']
 
             self.cmd_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-            label = Gtk.Label(label=label_txt)
-            # label.set_property("margin", 5)
+            label = Gtk.Label(label=label_txt, margin=5)
             label.set_ellipsize(Pango.EllipsizeMode.END)
-            self.btnexec = Gtk.Button(label="EXECUTE")
-            self.btnexec.set_property("margin", 5)
+            self.btnexec = Gtk.Button(label="EXECUTE", margin=5)
             self.btnexec.connect('clicked', self.execute_command, cmd)
 
             self.cmd_box.pack_start(label, False, False, 0)
@@ -391,10 +385,10 @@ class CustomCommands(Functions):
 
     def add_command(self, btn):
         get_inp = self.prompt()
-        if get_inp is None:
+        if get_inp is False:
             print('[!]Cancelled...')
             return 0
-        elif get_inp == 1:
+        elif get_inp is None:
             print('[!]Invalid Input...')
             return 0
 
@@ -404,11 +398,12 @@ class CustomCommands(Functions):
             config["commands_list"].append(new_entry)
             self.write_config(config)
         else:
-            print(f"An entry with name '{new_entry['label']}' already exists in the configuration.")
+            self.notification(f"{new_entry['label']}: [!]Already Exists")
         self.write_config(config)
         self.reload()
 
     def update_command(self, label, new_cmd=None, delete=False):
+        self.btnexec.hide()
         index = None
         config = self.read_config()
         for i, entry in enumerate(config["commands_list"]):
