@@ -18,7 +18,7 @@
               <object class="GtkLabel" id="app_name">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">NETHUNTER</property>
+                <property name="label" translatable="yes">$app_name</property>
                 <property name="justify">center</property>
                 <attributes>
                   <attribute name="size" value="20480"/>
