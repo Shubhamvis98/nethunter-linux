@@ -15,10 +15,10 @@
             <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkLabel" id="title">
+              <object class="GtkLabel" id="app_name">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">NETHUNTER</property>
+                <property name="label" translatable="yes">$app_name</property>
                 <property name="justify">center</property>
                 <attributes>
                   <attribute name="size" value="20480"/>
@@ -31,11 +31,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="app_version">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">v1.3-alpha
-by @ShubhamVis98</property>
+                <property name="label" translatable="yes">$version</property>
                 <property name="justify">center</property>
               </object>
               <packing>
@@ -45,19 +44,10 @@ by @ShubhamVis98</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="app_desc">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">
-FEATURES:
-- USB Arsenal
-- HID, Mass Storage and USB Tethering
-- Ducky implemented but maybe some keys won't work
-- MAC Changer
-- Deauther
-
-git/twitter: ShubhamVis98
-youtube: fossfrog</property>
+                <property name="label" translatable="yes">$desc</property>
                 <property name="xalign">0.05000000074505806</property>
               </object>
               <packing>
@@ -67,11 +57,10 @@ youtube: fossfrog</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="app_warn">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">!!!WARNING!!!
-DON'T MISUSE YOUR SUPERPOWERS</property>
+                <property name="label" translatable="yes">$app_warn</property>
                 <property name="justify">center</property>
               </object>
               <packing>
@@ -782,6 +771,80 @@ DON'T MISUSE YOUR SUPERPOWERS</property>
           </object>
           <packing>
             <property name="position">4</property>
+            <property name="tab-fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="ccmds_tab">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="shadow-type">in</property>
+                <child>
+                  <object class="GtkViewport">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkBox" id="ccmds_list">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">5</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="ccmds_action">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <object class="GtkButton" id="btn_ccmd_add">
+                    <property name="label" translatable="yes">Add</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel" id="ccmnds_l">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">Custom Commands</property>
+          </object>
+          <packing>
+            <property name="position">5</property>
             <property name="tab-fill">False</property>
           </packing>
         </child>
