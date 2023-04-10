@@ -53,16 +53,20 @@ class Functions:
             self.get_output(f'iwconfig {iface} mode managed')
         self.get_output(f'ip link set {iface} up')
     
-    def prompt(self):
+    def prompt(self, label=None, cmd=None):
+        label = label if label is not None else 'Label'
+        cmd = cmd if cmd is not None else 'Command'
         dialog = Gtk.Dialog(title="Add Command")
         dialog.add_buttons(
             Gtk.STOCK_OK,
             Gtk.ResponseType.OK,
             Gtk.STOCK_CANCEL,
-            Gtk.ResponseType.CANCEL
+            Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_DELETE,
+            Gtk.ResponseType.NO
         )
-        box_label = Gtk.Entry(text='Label', margin=5)
-        box_cmd = Gtk.Entry(text='Command', margin=5)
+        box_label = Gtk.Entry(text=label, margin=5)
+        box_cmd = Gtk.Entry(text=cmd, margin=5)
         dialog.vbox.pack_start(box_label, True, True, 0)
         dialog.vbox.pack_start(box_cmd, True, True, 0)
         dialog.show_all()
@@ -74,6 +78,10 @@ class Functions:
             ret = [label, cmd] if (label and cmd) != '' else None
         elif response == Gtk.ResponseType.CANCEL:
             ret = False
+        elif response == Gtk.ResponseType.NO:
+            self.delete_command(None, label)
+            ret = None
+
         dialog.destroy()
         return ret
 
@@ -384,6 +392,8 @@ class CustomCommands(Functions):
         cmd_list.foreach(lambda child: cmd_list.remove(child))
         config = self.read_config()
         cmd_list.show_all()
+        gear_icon = Gtk.Image.new_from_icon_name("preferences-system-symbolic", Gtk.IconSize.BUTTON)
+
         for c in config['commands_list']:
             label_txt = c['label']
             cmd = c['command']
@@ -391,14 +401,15 @@ class CustomCommands(Functions):
             self.cmd_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
             label = Gtk.Label(label=label_txt, margin=5)
             label.set_ellipsize(Pango.EllipsizeMode.END)
+            self.btnedit = Gtk.Button(image=gear_icon, margin=5)
             self.btnexec = Gtk.Button(label="EXECUTE", margin=5)
-            self.btndel = Gtk.Button(label="X", margin=5)
+
+            self.btnedit.connect('clicked', self.update_command, [label_txt, cmd])
             self.btnexec.connect('clicked', self.execute_command, cmd)
-            self.btndel.connect('clicked', self.delete_command, label_txt)
 
             self.cmd_box.pack_start(label, False, False, 0)
             self.cmd_box.pack_end(self.btnexec, False, False, 0)
-            self.cmd_box.pack_end(self.btndel, False, False, 0)
+            self.cmd_box.pack_end(self.btnedit, False, False, 0)
 
             cmd_list.pack_start(self.cmd_box, False, False, 0)
         cmd_list.show_all()
@@ -407,10 +418,10 @@ class CustomCommands(Functions):
         get_inp = self.prompt()
         if get_inp is False:
             print('[!]Cancelled...')
-            return 0
+            return
         elif get_inp is None:
             print('[!]Invalid Input...')
-            return 0
+            return
 
         config = self.read_config()
         new_entry = {'label': get_inp[0], "command": get_inp[1]}
@@ -435,7 +446,13 @@ class CustomCommands(Functions):
             self.write_config(config)
         self.reload()
 
-    def update_command(self, label, new_cmd=None, delete=False):
+    def update_command(self, btn, entry):
+        label = entry[0]
+        cmd = entry[1]
+        try:
+            new_label, new_cmd = self.prompt(entry[0], entry[1])
+        except:
+            return
         index = None
         config = self.read_config()
         for i, entry in enumerate(config["commands_list"]):
@@ -443,10 +460,8 @@ class CustomCommands(Functions):
                 index = i
                 break
         if index is not None:
-            if delete:
-                del config["commands_list"][index]
-            else:
-                config["commands_list"][index]["command"] = new_cmd
+            config["commands_list"][index]["label"] = new_label
+            config["commands_list"][index]["command"] = new_cmd
             config["last_updated"] = str(datetime.datetime.now())
             self.write_config(config)
         self.reload()
