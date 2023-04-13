@@ -7,7 +7,7 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Notify', '0.7')
 from gi.repository import Gtk, Gio, Pango, Notify
 from bin import ducky
-import os
+
 
 class Functions:
     def get_output(self, cmd, shell=False, wait=True):
@@ -58,14 +58,23 @@ class Functions:
         label = label if label is not None else 'Label'
         cmd = cmd if cmd is not None else 'Command'
         dialog = Gtk.Dialog(title)
-        dialog.add_buttons(
-            Gtk.STOCK_OK,
-            Gtk.ResponseType.OK,
-            Gtk.STOCK_CANCEL,
-            Gtk.ResponseType.CANCEL,
-            Gtk.STOCK_DELETE,
-            Gtk.ResponseType.NO
-        )
+        if title == 'Update Command':
+            dialog.add_buttons(
+                Gtk.STOCK_OK,
+                Gtk.ResponseType.OK,
+                Gtk.STOCK_CANCEL,
+                Gtk.ResponseType.CANCEL,
+                Gtk.STOCK_DELETE,
+                Gtk.ResponseType.NO
+            )
+        else:
+            dialog.add_buttons(
+                Gtk.STOCK_OK,
+                Gtk.ResponseType.OK,
+                Gtk.STOCK_CANCEL,
+                Gtk.ResponseType.CANCEL,
+            )
+
         box_label = Gtk.Entry(text=label, margin=5)
         box_cmd = Gtk.Entry(text=cmd, margin=5)
         dialog.vbox.pack_start(box_label, True, True, 0)
