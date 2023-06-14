@@ -1,0 +1,14 @@
+{
+  "app_name": "Nethunter",
+  "last_updated": "2023-06-14 14:33:44.125482",
+  "commands_list": [
+    {
+      "label": "Label",
+      "command": "Command"
+    },
+    {
+      "label": "a",
+      "command": "Command"
+    }
+  ]
+}

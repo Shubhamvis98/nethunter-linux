@@ -398,28 +398,29 @@ class CustomCommands(Functions):
     def reload(self):
         cmd_list = self.builder.get_object("ccmds_list")
         cmd_list.foreach(lambda child: cmd_list.remove(child))
-        config = self.read_config()
-        cmd_list.show_all()
-        gear_icon = Gtk.Image.new_from_icon_name("preferences-system-symbolic", Gtk.IconSize.BUTTON)
 
+        config = self.read_config()
+        gear_icon = Gio.ThemedIcon(name="preferences-system-symbolic")
+        
         for c in config['commands_list']:
             label_txt = c['label']
             cmd = c['command']
 
-            self.cmd_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+            cmd_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
             label = Gtk.Label(label=label_txt, margin=5)
             label.set_ellipsize(Pango.EllipsizeMode.END)
-            self.btnedit = Gtk.Button(image=gear_icon, margin=5)
-            self.btnexec = Gtk.Button(label="EXECUTE", margin=5)
+            btnedit = Gtk.Button(margin=5)
+            btnedit.set_image(Gtk.Image.new_from_gicon(gear_icon, Gtk.IconSize.BUTTON))
+            btnexec = Gtk.Button(label="EXECUTE", margin=5)
 
-            self.btnedit.connect('clicked', self.update_command, [label_txt, cmd])
-            self.btnexec.connect('clicked', self.execute_command, cmd)
+            btnedit.connect('clicked', self.update_command, [label_txt, cmd])
+            btnexec.connect('clicked', self.execute_command, cmd)
 
-            self.cmd_box.pack_start(label, False, False, 0)
-            self.cmd_box.pack_end(self.btnexec, False, False, 0)
-            self.cmd_box.pack_end(self.btnedit, False, False, 0)
+            cmd_box.pack_start(label, False, False, 0)
+            cmd_box.pack_end(btnexec, False, False, 0)
+            cmd_box.pack_end(btnedit, False, False, 0)
 
-            cmd_list.pack_start(self.cmd_box, False, False, 0)
+            cmd_list.pack_start(cmd_box, False, False, 0)
         cmd_list.show_all()
 
     def add_command(self, btn):
