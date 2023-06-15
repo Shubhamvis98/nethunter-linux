@@ -1,0 +1,16 @@
+#!/bin/bash
+clear
+cat <<'EOF'
+     __     _                      _            
+  /\ \ \___| |_  /\  /\_   _ _ __ | |_ ___ _ __ 
+ /  \/ / _ \ __|/ /_/ / | | | '_ \| __/ _ \ '__|
+/ /\  /  __/ |_/ __  /| |_| | | | | ||  __/ |   
+\_\ \/ \___|\__\/ /_/  \__,_|_| |_|\__\___|_|   
+
+git:shubhamvis98/nethunter-pinephone
+
+EOF
+
+nh_dir=$(dirname "$(realpath "$0")")
+cd $nh_dir
+sudo -EH python nethunter.py
