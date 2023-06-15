@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=NetHunter
+Comment=NetHunter for Linux
+Encoding=UTF-8
+Exec=/home/kali/Desktop/nethunter-pinephone/nhlauncher
+Icon=/home/kali/nh_icon.png
+Terminal=true
+Type=Application
+Categories=06-wireless-attacks;
