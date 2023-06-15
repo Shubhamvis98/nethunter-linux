@@ -95,6 +95,12 @@ class Functions:
         dialog.destroy()
         return ret
 
+    def set_app_theme(theme_name, isdark=False):
+        settings = Gtk.Settings.get_default()
+        settings.set_property("gtk-theme-name", theme_name)
+        settings.set_property("gtk-application-prefer-dark-theme", isdark)
+
+
 class Home(Functions):
     def __init__(self, builder):
         self.builder = builder
@@ -107,6 +113,7 @@ class Home(Functions):
         self.app_version.set_label('v1.4-alpha\nby @ShubhamVis98')
         self.app_desc.set_label("\nFEATURES:\n- USB Arsenal\n- HID, Mass Storage and USB Tethering\n- Ducky implemented but maybe some keys won't work\n- MAC Changer\n- Deauther\n- Custom Commands\n\ngit/twitter: ShubhamVis98\nyoutube: fossfrog\n")
         self.app_warn.set_label("!!!WARNING!!!\nDON'T MISUSE YOUR SUPERPOWERS")
+        Functions.set_app_theme("Adwaita", True)
     
     def run(self):
         pass
