@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=NetHunter
+Comment=NetHunter for Linux
+Encoding=UTF-8
+Exec=/usr/lib/nethunter/nhlauncher
+Icon=/usr/lib/nethunter/logo.svg
+Terminal=true
+Type=Application
+Categories=06-wireless-attacks;
