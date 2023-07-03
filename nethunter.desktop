@@ -7,3 +7,4 @@ Icon=/usr/lib/nethunter/logo.svg
 Terminal=true
 Type=Application
 Categories=06-wireless-attacks;
+X-Purism-FormFactor=Workstation;Mobile;
