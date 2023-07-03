@@ -110,7 +110,7 @@ class Home(Functions):
         self.app_warn = self.builder.get_object('app_warn')
 
         self.app_name.set_label('NETHUNTER')
-        self.app_version.set_label('v1.4-alpha\nby @ShubhamVis98')
+        self.app_version.set_label('v1.5-alpha\nby @ShubhamVis98')
         self.app_desc.set_label("\nFEATURES:\n- USB Arsenal\n- HID, Mass Storage and USB Tethering\n- Ducky implemented but maybe some keys won't work\n- MAC Changer\n- Deauther\n- Custom Commands\n\ngit/twitter: ShubhamVis98\nyoutube: fossfrog\n")
         self.app_warn.set_label("!!!WARNING!!!\nDON'T MISUSE YOUR SUPERPOWERS")
         Functions.set_app_theme("Adwaita", True)
