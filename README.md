@@ -9,12 +9,11 @@
     <li>Keyboard and Mouse Input Working</li>
     <li>USB Mass Storage Working</li>
     <li>USB Tethering</li>
-    <li>Ducky [A minimal Rucky like implementation]</li>
+    <li>Ducky [A minimal Rucky-like implementation]</li>
     <li>MAC Changer GUI Added</li>
     <li>Deauther</li>
     <li>Custom Commands</li>
 </ul>
-<h3>You can use all the above features through command-line as well if you don't want to use GUI</h3>
 <h2>Prerequisites:</h2>
 <ul>
     <li>python3</li>
@@ -23,6 +22,7 @@
     <li>mdk4</li>
     <li>gir1.2-notify-0.7</li>
 </ul>
+<h3>You can use all the above features through command line as well if you don't want to use GUI</h3>
 <h3>Command: <code>bin/usbarsenal</code></h3>
 <pre>
  _ _  ___  ___   ___  ___  ___  ___  _ _  ___  _
