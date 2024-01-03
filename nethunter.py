@@ -39,7 +39,6 @@ class Functions:
             self.get_output(f'iwconfig {iface} mode monitor')
         self.get_output(f'ip link set {iface} up')
 
-
     def stop_monitor_mode(self, iface, mode=0):
         '''
         mode:
@@ -120,7 +119,6 @@ class Functions:
                 interfaces.append(interface_name)
 
         return interfaces
-
 
 class Home(Functions):
     def __init__(self, builder):
@@ -363,12 +361,6 @@ class BadBT(Functions):
             self.btiface.set_active(0)
             self.setStatus('[+]Interface List Loaded')
 
-
-        
-            
-
-
-
 class MACChanger(Functions):
     def __init__(self, builder):
         self.builder = builder
@@ -456,7 +448,6 @@ class Deauther(Functions):
         for i in mon_modes:
             self.monmode.append_text(i)
         self.monmode.set_active(1)
-
 
     def deauther_scan(self, btn):
         display = self.display_buffer
