@@ -1,6 +1,6 @@
 <h2>NETHUNTER for PinePhone</h2>
 
-<h3>GUI: <code>python nethunter.py</code></h3>
+<h3>GUI: <code>python3 nethunter.py</code></h3>
 <h2>Preview:</h2>
 <img width="400px" src="https://user-images.githubusercontent.com/43336210/227779934-d7cfcb1f-8ce4-41b1-b8e5-fa02f3828be5.gif">
 
@@ -47,7 +47,7 @@ Optional Args:
         --product [Product]
         --serialno [Serial No.]
 </pre>
-<h3>Command: <code>python bin/ducky.py</code></h3>
+<h3>Command: <code>python3 bin/ducky.py</code></h3>
 <pre>
   ___  _   _  ___ _  ____   __  ___ _  _    _ ___ ___ _____ ___  ___ 
  |   \| | | |/ __| |/ /\ \ / / |_ _| \| |_ | | __/ __|_   _/ _ \| _ \
