@@ -13,6 +13,7 @@
     <li>MAC Changer GUI Added</li>
     <li>Deauther</li>
     <li>Custom Commands</li>
+    <li>BadBT (Bluetooth Ducky)</li>
 </ul>
 <h2>Prerequisites:</h2>
 <ul>
