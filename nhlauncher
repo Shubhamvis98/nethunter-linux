@@ -13,4 +13,4 @@ EOF
 
 nh_dir=$(dirname "$(realpath "$0")")
 cd $nh_dir
-sudo -EH python nethunter.py
+sudo -EH python3 nethunter.py
