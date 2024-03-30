@@ -1,4 +1,4 @@
-<h2>NETHUNTER for PinePhone</h2>
+<h2>NETHUNTER for Linux Phones</h2>
 
 <h3>GUI: <code>python3 nethunter.py</code></h3>
 <h2>Preview:</h2>
