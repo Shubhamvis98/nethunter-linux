@@ -130,7 +130,7 @@ class Home(Functions):
 
         self.app_name.set_label('NETHUNTER')
         self.app_version.set_label('v1.6-alpha\nby @ShubhamVis98')
-        self.app_desc.set_label("\nFEATURES:\n- USB Arsenal\n- HID, Mass Storage and USB Tethering\n- USB Ducky\n- MAC Changer\n- Deauther\n- Custom Commands\n- BadBT (Bluetooth Ducky)\n\ngit/twitter: ShubhamVis98\nyoutube: fossfrog\n")
+        self.app_desc.set_label("\nFEATURES:\n- USB Arsenal\n- HID, Mass Storage and USB Tethering (BadUSB)\n- USB Ducky\n- MAC Changer\n- Deauther\n- Custom Commands\n- BadBT (Bluetooth Ducky)\n\ngit/twitter: ShubhamVis98\nyoutube: fossfrog\n")
         self.app_warn.set_label("!!!WARNING!!!\nDON'T MISUSE YOUR SUPERPOWERS")
         Functions.set_app_theme("Adwaita", True)
     

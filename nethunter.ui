@@ -100,7 +100,7 @@
                   <item id="null" translatable="yes">&lt;Select USB Function&gt;</item>
                   <item id="hid" translatable="yes">HID</item>
                   <item id="mass" translatable="yes">Mass Storage</item>
-                  <item id="teth" translatable="yes">USB Tethering</item>
+                  <item id="teth" translatable="yes">USB Tethering (BadUSB)</item>
                 </items>
               </object>
               <packing>
