@@ -120,6 +120,18 @@ class Functions:
 
         return interfaces
 
+class AppDetails:
+    name = 'NetHunter'
+    version = '1.6-alpha'
+    desc = "A Clone of Android's NetHunter for GNU/Linux Phones"
+    dev = 'Shubham Vishwakarma'
+    install_path = '/usr/lib/nethunter'
+    # install_path = '.'
+    ui = f'{install_path}/nethunter.ui'
+    applogo = 'in.fossfrog.nethunter'
+    config_path = f"{os.path.expanduser('~')}/.config/nethunter"
+    config_file = f'{config_path}/configuration.json'
+
 class Home(Functions):
     def __init__(self, builder):
         self.builder = builder
@@ -131,7 +143,7 @@ class Home(Functions):
         self.btn_main_quit.connect('clicked', Gtk.main_quit)
 
         self.app_name.set_label('NETHUNTER')
-        self.app_version.set_label('v1.6-alpha\nby @ShubhamVis98')
+        self.app_version.set_label(f'{AppDetails.version}\nby @ShubhamVis98')
         self.app_desc.set_label("\nFEATURES:\n- USB Arsenal\n- HID, Mass Storage and USB Tethering (BadUSB)\n- USB Ducky\n- MAC Changer\n- Deauther\n- Custom Commands\n- BadBT (Bluetooth Ducky)\n\ngit/twitter: ShubhamVis98\nyoutube: fossfrog\n")
         self.app_warn.set_label("!!!WARNING!!!\nDON'T MISUSE YOUR SUPERPOWERS")
         Functions.set_app_theme("Adwaita", True)
@@ -588,6 +600,7 @@ class CustomCommands(Functions):
 class NHGUI(Gtk.Application):
     def __init__(self):
         Gtk.Application.__init__(self, application_id="in.fossfrog.nh")
+        Gtk.Window.set_default_icon_name(AppDetails.applogo)
 
     def do_activate(self):
         appname = 'NetHunter'
