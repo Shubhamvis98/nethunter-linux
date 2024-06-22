@@ -127,6 +127,8 @@ class Home(Functions):
         self.app_version = self.builder.get_object('app_version')
         self.app_desc = self.builder.get_object('app_desc')
         self.app_warn = self.builder.get_object('app_warn')
+        self.btn_main_quit = self.builder.get_object('btn_main_quit')
+        self.btn_main_quit.connect('clicked', Gtk.main_quit)
 
         self.app_name.set_label('NETHUNTER')
         self.app_version.set_label('v1.6-alpha\nby @ShubhamVis98')
@@ -607,7 +609,7 @@ class NHGUI(Gtk.Application):
         Notify.init(appname)
 
         # Show the window
-        window.connect("destroy", Gtk.main_quit)
+        # window.connect("destroy", Gtk.main_quit)
         window.show_all()
 
     def do_startup(self):
