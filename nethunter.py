@@ -122,7 +122,7 @@ class Functions:
 
 class AppDetails:
     name = 'NetHunter'
-    version = '1.7'
+    version = '1.8'
     desc = "A Clone of Android's NetHunter for GNU/Linux Phones"
     dev = 'Shubham Vishwakarma'
     install_path = '/usr/lib/nethunter'
@@ -131,6 +131,39 @@ class AppDetails:
     applogo = 'in.fossfrog.nethunter'
     config_path = f"{os.path.expanduser('~')}/.config/nethunter"
     config_file = f'{config_path}/configuration.json'
+
+class AboutScreen(Gtk.Window):
+    def __init__(self):
+        super().__init__()
+        builder = Gtk.Builder()
+        builder.add_from_file(AppDetails.ui)
+
+        # Get IDs from UI file
+        self.about_win = builder.get_object('about_window')
+        app_logo = builder.get_object('app_logo')
+        app_name_ver = builder.get_object('app_name_ver')
+        app_desc = builder.get_object('app_desc_about')
+        app_dev = builder.get_object('app_dev')
+        btn_about_close = builder.get_object('btn_about_close')
+
+        # Set logo
+        icon_theme = Gtk.IconTheme.get_default()
+        pixbuf = icon_theme.load_icon(AppDetails.applogo, 150, 0)
+        app_logo.set_from_pixbuf(pixbuf)
+
+        # Set app details
+        app_name_ver.set_markup(f'<b>{AppDetails.name} {AppDetails.version}</b>')
+        app_desc.set_markup(f'{AppDetails.desc}')
+        app_dev.set_markup(f'Copyright © 2024 {AppDetails.dev}')
+
+        btn_about_close.connect('clicked', self.on_close_clicked)
+
+        self.about_win.set_title('About')
+        self.add(self.about_win)
+        self.about_win.show()
+
+    def on_close_clicked(self, widget):
+        self.destroy()
 
 class Home(Functions):
     def __init__(self, builder):
@@ -141,6 +174,7 @@ class Home(Functions):
         self.app_warn = self.builder.get_object('app_warn')
         self.btn_main_quit = self.builder.get_object('btn_main_quit')
         self.btn_main_quit.connect('clicked', Gtk.main_quit)
+        self.builder.get_object('btn_about').connect('clicked', self.show_about)
 
         self.app_name.set_label('NETHUNTER')
         self.app_version.set_label(f'{AppDetails.version}\nby @ShubhamVis98')
@@ -150,6 +184,9 @@ class Home(Functions):
     
     def run(self):
         pass
+
+    def show_about(self, widget=None):
+        AboutScreen()
 
 class Arsenal(Functions):
     def __init__(self, builder):
