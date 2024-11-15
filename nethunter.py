@@ -122,7 +122,7 @@ class Functions:
 
 class AppDetails:
     name = 'NetHunter'
-    version = '1.8'
+    version = '1.9'
     desc = "A Clone of Android's NetHunter for GNU/Linux Phones"
     dev = 'Shubham Vishwakarma'
     install_path = '/usr/lib/nethunter'
