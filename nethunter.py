@@ -504,7 +504,7 @@ class Deauther(Functions):
         display = self.display_buffer
         ifname = self.iface.get_active_text()
         if ifname:
-            out = self.get_output(f"iwlist {ifname} scanning | grep 'ESSID|Frequency' | tac", shell=True)
+            out = self.get_output(f"iwlist {ifname} scanning | grep -E 'ESSID|Frequency' | tac", shell=True)
             display.set_text(out[0].replace(' ', '').replace('Frequency', 'Freq').replace('Channel', 'Ch '))
         else:
             display.set_text('[!]Select Interface First')
