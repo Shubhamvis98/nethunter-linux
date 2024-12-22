@@ -122,14 +122,15 @@ class Functions:
 
 class AppDetails:
     name = 'NetHunter'
-    version = '1.9'
+    version = '1.9.1'
     desc = "A Clone of Android's NetHunter for GNU/Linux Phones"
     dev = 'Shubham Vishwakarma'
-    install_path = '/usr/lib/nethunter'
+    appid = 'in.fossfrog.nethunter'
+    applogo = appid
+    install_path = f'/usr/lib/{appid}'
     # install_path = '.'
     ui = f'{install_path}/nethunter.ui'
-    applogo = 'in.fossfrog.nethunter'
-    config_path = f"{os.path.expanduser('~')}/.config/nethunter"
+    config_path = f"{os.path.expanduser('~')}/.config/{appid}"
     config_file = f'{config_path}/configuration.json'
 
 class AboutScreen(Gtk.Window):
