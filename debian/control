@@ -1,0 +1,28 @@
+Source: nethunter
+Section: net
+Priority: optional
+Maintainer: Shubham Vishwakarma <shubhamvis98@fossfrog.in>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+Standards-Version: 4.6.2
+Homepage: https://fossfrog.in
+Vcs-Browser: https://fossfrog.in
+Vcs-Git: https://github.com/shubhamvis98/nethunter-linux.git
+
+Package: nethunter
+Architecture: all
+Depends: python3, python3-bluez, python3-psutil, macchanger, mdk4, gir1.2-notify-0.7
+Description: An unofficial clone of Android's NetHunter app
+ for GNU/Linux Operating Systems and Phones. Initially built
+ for PinePhone.
+ .
+ Features Implemented:
+ - Keyboard and Mouse Input Working
+ - USB Mass Storage Working
+ - USB Tethering
+ - Ducky [A minimal Rucky-like implementation]
+ - MAC Changer GUI Added
+ - Deauther
+ - Custom Commands
+ - BadBT (Bluetooth Ducky)

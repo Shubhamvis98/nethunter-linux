@@ -1,4 +1,4 @@
-<img width="400px" src="https://github.com/Shubhamvis98/nethunter-linux/raw/master/in.fossfrog.nethunter.svg">
+<img width="400px" src="https://github.com/Shubhamvis98/nethunter-linux/raw/master/src/usr/share/icons/hicolor/scalable/apps/in.fossfrog.nethunter.svg">
 <h2>NETHUNTER for Linux Phones</h2>
 
 <h3>GUI: <code>python3 nethunter.py</code></h3>
