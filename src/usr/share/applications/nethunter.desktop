@@ -2,7 +2,7 @@
 Name=NetHunter
 Comment=NetHunter for Linux
 Encoding=UTF-8
-Exec=/usr/lib/nethunter/nhlauncher
+Exec=/usr/lib/in.fossfrog.nethunter/nhlauncher
 Icon=in.fossfrog.nethunter
 Terminal=true
 Type=Application
