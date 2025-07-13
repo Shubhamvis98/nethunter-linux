@@ -13,7 +13,7 @@ Vcs-Git: https://github.com/shubhamvis98/nethunter-linux.git
 Package: nethunter
 Architecture: all
 Depends: python3, python3-bluez, python3-psutil, macchanger, mdk4, gir1.2-notify-0.7
-Description:
+Description: NetHunter app for Linux Phones
  A clone of Android's NetHunter app for GNU/Linux
  Operating Systems and Phones. Initially built
  for PinePhone.
